@@ -2,6 +2,7 @@
 
 namespace Codekinz\LaravelPalette\Tests\Fixtures;
 
+use Codekinz\LaravelPalette\Casts\ColorPalette;
 use Illuminate\Database\Eloquent\Model;
 
 class Photo extends Model
@@ -11,6 +12,6 @@ class Photo extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'dominant_colors' => 'array',
+        'dominant_colors' => ColorPalette::class,
     ];
 }

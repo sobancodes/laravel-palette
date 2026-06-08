@@ -1,7 +1,6 @@
 <?php
 
 use Codekinz\LaravelPalette\PaletteManager;
-use Illuminate\Support\Facades\Cache;
 
 it('extracts representative colors from an image', function () {
     $colors = app(PaletteManager::class)->extract($this->fixturePath('test.png'), 3);
@@ -59,28 +58,41 @@ it('loads images from a storage disk', function () {
 
 it('caches extraction results when enabled', function () {
     config()->set('palette.cache.enabled', true);
-    config()->set('palette.cache.prefix', 'palette:');
 
-    $path = $this->fixturePath('test.png');
+    $path = sys_get_temp_dir().'/palette-cache-enabled-'.uniqid().'.png';
+    copy($this->fixturePath('test.png'), $path);
 
-    app(PaletteManager::class)->extract($path, 2);
+    try {
+        $colors = app(PaletteManager::class)->extract($path, 2);
 
-    $key = 'palette:'.sha1(implode('|', ['', $path, 'representative', 2, '']));
+        unlink($path);
 
-    expect(Cache::has($key))->toBeTrue();
+        expect(app(PaletteManager::class)->extract($path, 2))->toBe($colors);
+    } finally {
+        if (is_file($path)) {
+            unlink($path);
+        }
+    }
 });
 
 it('does not cache extraction results when disabled', function () {
     config()->set('palette.cache.enabled', false);
 
-    $path = $this->fixturePath('test.png');
+    $path = sys_get_temp_dir().'/palette-cache-disabled-'.uniqid().'.png';
+    copy($this->fixturePath('test.png'), $path);
 
-    app(PaletteManager::class)->extract($path, 2);
+    try {
+        app(PaletteManager::class)->extract($path, 2);
 
-    $key = 'palette:'.sha1(implode('|', ['', $path, 'representative', 2, '']));
+        unlink($path);
 
-    expect(Cache::has($key))->toBeFalse();
-});
+        app(PaletteManager::class)->extract($path, 2);
+    } finally {
+        if (is_file($path)) {
+            unlink($path);
+        }
+    }
+})->throws(\InvalidArgumentException::class);
 
 it('throws an exception for a missing image', function () {
     app(PaletteManager::class)->extract($this->fixturePath('missing.png'));
