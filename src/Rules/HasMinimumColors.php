@@ -30,7 +30,9 @@ class HasMinimumColors implements ValidationRule
         }
 
         if (count(app(PaletteManager::class)->extract($path, $this->minimum)) < $this->minimum) {
-            $fail("The {$attribute} must contain at least {$this->minimum} distinct colors.");
+            $color = $this->minimum === 1 ? 'color' : 'colors';
+
+            $fail("The {$attribute} must contain at least {$this->minimum} distinct {$color}.");
         }
     }
 }
