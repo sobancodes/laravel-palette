@@ -36,6 +36,16 @@ class PaletteManager
     /**
      * @return list<string>
      */
+    public function colors(string $path, ?int $count = null): array
+    {
+        return $this->resolveMethod() === 'most_used'
+            ? $this->mostUsed($path, $count)
+            : $this->extract($path, $count);
+    }
+
+    /**
+     * @return list<string>
+     */
     public function extract(string $path, ?int $count = null): array
     {
         $count = $this->resolveCount($count);
@@ -118,6 +128,11 @@ class PaletteManager
     protected function resolveCount(?int $count): int
     {
         return $count ?? (int) ($this->config['count'] ?? 5);
+    }
+
+    protected function resolveMethod(): string
+    {
+        return (string) ($this->config['method'] ?? 'representative');
     }
 
     protected function resolveBackground(mixed $background): ?int

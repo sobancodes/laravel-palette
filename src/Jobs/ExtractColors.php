@@ -19,23 +19,14 @@ class ExtractColors implements ShouldQueue
 
     public ?string $disk;
 
-    protected mixed $callback = null;
-
     public function __construct(
         public string $path,
-        callable|string|null $disk = null,
+        ?string $disk = null,
         public int $count = 5,
         public ?string $model = null,
         public int|string|null $modelId = null,
         public string $column = 'dominant_colors'
     ) {
-        if (is_callable($disk)) {
-            $this->callback = $disk;
-            $this->disk = null;
-
-            return;
-        }
-
         $this->disk = $disk;
     }
 
@@ -54,10 +45,6 @@ class ExtractColors implements ShouldQueue
             : $palette->fromDisk($this->disk);
 
         $colors = $manager->extract($this->path, $this->count);
-
-        if ($this->callback !== null) {
-            call_user_func($this->callback, $colors);
-        }
 
         $this->updateModel($colors);
 
