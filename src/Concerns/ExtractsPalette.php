@@ -13,7 +13,7 @@ trait ExtractsPalette
         int $count = 5,
         string $column = 'dominant_colors'
     ): mixed {
-        $path ??= $this->getAttribute('image_path') ?? $this->getAttribute('path');
+        $path ??= $this->paletteImagePath();
 
         if (! is_string($path) || $path === '') {
             throw new InvalidArgumentException('A path is required to extract colors.');
@@ -27,5 +27,10 @@ trait ExtractsPalette
             $this->getKey(),
             $column
         );
+    }
+
+    protected function paletteImagePath(): ?string
+    {
+        return null;
     }
 }

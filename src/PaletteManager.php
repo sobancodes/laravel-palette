@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use League\ColorExtractor\Color;
 use League\ColorExtractor\ColorExtractor;
 use League\ColorExtractor\Palette;
+use Throwable;
 
 class PaletteManager
 {
@@ -26,15 +27,10 @@ class PaletteManager
     }
 
     /**
-     * @return array<string, mixed>
-     */
-    public function config(): array
-    {
-        return $this->config;
-    }
-
-    /**
      * @return list<string>
+     *
+     * @throws InvalidArgumentException
+     * @throws Throwable
      */
     public function colors(string $path, ?int $count = null): array
     {
@@ -45,6 +41,9 @@ class PaletteManager
 
     /**
      * @return list<string>
+     *
+     * @throws InvalidArgumentException
+     * @throws Throwable
      */
     public function extract(string $path, ?int $count = null): array
     {
@@ -59,6 +58,9 @@ class PaletteManager
 
     /**
      * @return list<string>
+     *
+     * @throws InvalidArgumentException
+     * @throws Throwable
      */
     public function mostUsed(string $path, ?int $count = null): array
     {
@@ -71,6 +73,9 @@ class PaletteManager
 
     /**
      * @return array<string, int>
+     *
+     * @throws InvalidArgumentException
+     * @throws Throwable
      */
     public function palette(string $path): array
     {
@@ -93,6 +98,9 @@ class PaletteManager
         return $manager;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function withBackground(string $hexColor): self
     {
         $manager = clone $this;
