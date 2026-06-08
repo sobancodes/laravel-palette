@@ -20,7 +20,11 @@
     "league/color-extractor": "^0.4",
     "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
     "illuminate/contracts": "^10.0|^11.0|^12.0|^13.0",
-    "illuminate/filesystem": "^10.0|^11.0|^12.0|^13.0"
+    "illuminate/filesystem": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/cache": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/database": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/bus": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/queue": "^10.0|^11.0|^12.0|^13.0"
   },
   "require-dev": {
     "orchestra/testbench": "^8.0|^9.0|^10.0",
@@ -30,7 +34,10 @@
   "autoload": {
     "psr-4": {
       "Codekinz\\LaravelPalette\\": "src/"
-    }
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
